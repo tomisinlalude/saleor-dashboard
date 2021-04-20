@@ -1,0 +1,16 @@
+{{- if .Values.ingress.enabled -}}
+{{- $fullName := include "dashboard-chart.fullname" . -}}
+{{- $svcPort := .Values.service.ports.port -}}
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: {{ $fullName }}
+  labels:
+    {{- include "dashboard-chart.labels" . | nindent 4 }}
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: "dashboard"
+spec:
+  backend:
+    serviceName: {{ $fullName }}
+    servicePort: {{ $svcPort }}
+  {{- end }} 
